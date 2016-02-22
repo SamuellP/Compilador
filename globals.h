@@ -1,0 +1,4 @@
+
+FILE *source;
+
+FILE *destination;

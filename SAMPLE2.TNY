@@ -1,0 +1,35 @@
+
+inteiro val1 := 10;
+inteiro val2 := 15;
+
+inteiro dif(inteiro a, inteiro b)
+
+	{inteiro soma(inteiro a, inteiro b)
+		retorna a + b;
+	fim}
+
+	se a < b então
+		retorna (b-a);
+	senão
+		retorna (a-b);
+	fim
+	soma(2,4);
+fim
+
+inteiro a;
+
+
+dif(val1,val2);
+
+inteiro soma(inteiro a, inteiro b)
+		retorna a - b;
+fim
+
+
+inteiro soma(inteiro a, inteiro b)
+	inteiro soma := 1;
+	retorna a+b;
+
+	diff(a, b);
+
+fim

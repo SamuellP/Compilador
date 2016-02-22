@@ -1,0 +1,18 @@
+flutuante c;
+inteiro z;
+inteiro b := 5;
+
+
+z := 5;
+
+
+
+c := 1.5;
+
+inteiro p := 10, couve := 18, g, abobora := 15;
+
+inteiro soma (inteiro a, inteiro b)
+
+    retorna a + c;
+
+fim
