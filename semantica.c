@@ -53,8 +53,12 @@ void aritmetica(TreeNode* treeNode){
 
 	}else if(!strcmp(treeNode->nameNode,"ID")){
 
-		if(!containsKey(treeNode->valor, escopo)){
-
+		if(strcmp(escopo,"&") && !containsKey(treeNode->valor, escopo)){
+			if(!containsKey(treeNode->valor, "&")){
+				printf("\n\n A variavel %s não foi declarada \n\n", treeNode->valor);
+				exit(1);
+			}
+		}else if(!containsKey(treeNode->valor, escopo)){
 			printf("\n\n A variavel %s não foi declarada \n\n", treeNode->valor);
 			exit(1);
 		}
@@ -64,6 +68,7 @@ void aritmetica(TreeNode* treeNode){
 }
 
 void trataAtribuicaoNaDeclaracao(TreeNode* aux, char* tipo){
+	    char* tipoId2;
 
 		if(containsKey(aux->filhos[0]->valor, escopo)){
 			printf("\n\nErro do tipo semantico. Variavel %s ja declarada...\n\n", aux->filhos[0]->valor);
@@ -74,11 +79,30 @@ void trataAtribuicaoNaDeclaracao(TreeNode* aux, char* tipo){
 
 		if(!strcmp(aux->filhos[1]->nameNode,"ID")){
 
-			if(!containsKey(aux->filhos[1]->valor, escopo)){
-
-				printf("\n\nErro do tipo semantico. Variavel %s nao foi declarada...\n\n", aux->filhos[1]->valor);
-		    	exit(1);
+			if(strcmp(escopo,"&") && !containsKey(aux->filhos[1]->valor, escopo)){
+				if(!containsKey(aux->filhos[1]->valor, "&")){
+					printf("\n\nErro do tipo semantico. Variavel %s nao foi declarada... ***\n\n", aux->filhos[1]->valor);
+					exit(1);
+				}else{
+					tipoId2 = getType(aux->filhos[1]->valor,"&");
+				}
+			}else if(!containsKey(aux->filhos[1]->valor, escopo)){
+				printf("\n\nErro do tipo semantico. Variavel %s nao foi declarada... ***\n\n", aux->filhos[1]->valor);
+				exit(1);
+			}else{
+				tipoId2 = getType(aux->filhos[1]->valor, escopo);
 			}
+
+			if(!strcmp(tipo,"FLOAT") && !strcmp(tipoId2,"INT")){
+				printf("\n\nO valor inteiro não pode ser adicionado a uma variável do tipo flutuante\n\n");
+				exit(1);
+			}
+
+			if(!strcmp(tipo,"INT") && !strcmp(tipoId2,"FLOAT")){
+				printf("\n\nO valor flutuante não pode ser adicionado a uma variável do tipo inteiro\n\n");
+				exit(1);
+			}
+
 		}
 
 		if(!strcmp(aux->filhos[1]->nameNode,"VAL_INT")) {
@@ -127,6 +151,8 @@ void trataListaDeclaracao(TreeNode* aux, char* tipo){
 			trataAtribuicaoNaDeclaracao(aux->filhos[1], tipo);
 
 		}else if(!strcmp(aux->filhos[1]->nameNode,"ID")){
+			
+
 			if(containsKey(aux->filhos[1]->valor, escopo)){
 
 				printf("\n\nErro do tipo semantico. Variavel %s ja declarada...\n\n", aux->filhos[1]->valor);
@@ -248,11 +274,11 @@ void trataRepeticao(TreeNode* tree){
 }
 
 void trataRetorno(TreeNode* tree){
-
+    
 	if(!strcmp(tree->filhos[0]->nameNode,"ID")){
 		if(!containsKey(tree->filhos[0]->valor,escopo)){
 			if(!containsKey(tree->filhos[0]->valor,"&") || isFunction(tree->filhos[0]->valor))
-				printf("\n\nA variavel %s nao foi declarada nesse escopo",tree->filhos[0]->valor);
+				printf("\n\nA variavel %s nao foi declarada nesse escopo\n\n",tree->filhos[0]->valor);
 		}
 	}
 
@@ -263,27 +289,54 @@ void trataRetorno(TreeNode* tree){
 
 void trataAtribuicao(TreeNode* tree){
 
-	char* tipo;
+	char* tipoId1;
+	char* tipoId2;
 
-	if(!containsKey(tree->filhos[0]->valor, escopo)){
+	if(strcmp(escopo,"&") && !containsKey(tree->filhos[0]->valor, escopo)){
+		if(!containsKey(tree->filhos[0]->valor, "&")){
+			printf("\n\nErro do tipo semantico. Variavel %s nao foi declarada...\n\n", tree->filhos[0]->valor);
+			exit(1);
+		}else{
+			tipoId1 = getType(tree->filhos[0]->valor, "&");
+		}
+	}else if(!containsKey(tree->filhos[0]->valor, escopo)){
 		printf("\n\nErro do tipo semantico. Variavel %s nao foi declarada...\n\n", tree->filhos[0]->valor);
 		exit(1);
+	}else{
+		tipoId1 = getType(tree->filhos[0]->valor, escopo);
 	}
 
 	if(!strcmp(tree->filhos[1]->nameNode,"ID")){
 
-		if(!containsKey(tree->filhos[1]->valor, escopo)){
-
+		if(strcmp(escopo,"&") && !containsKey(tree->filhos[1]->valor, escopo)){
+			if(!containsKey(tree->filhos[1]->valor, "&")){
+				printf("\n\nErro do tipo semantico. Variavel %s nao foi declarada...\n\n", tree->filhos[1]->valor);
+				exit(1);
+			}else{
+				tipoId2 = getType(tree->filhos[1]->valor, "&");
+			}
+		}else if(!containsKey(tree->filhos[1]->valor, escopo)){
 			printf("\n\nErro do tipo semantico. Variavel %s nao foi declarada...\n\n", tree->filhos[1]->valor);
-		    exit(1);
+			exit(1);
+		}else{
+			tipoId2 = getType(tree->filhos[1]->valor, escopo);
 		}
+
+		if(!strcmp(tipoId1,"FLOAT") && !strcmp(tipoId2,"INT")){
+			printf("\n\nO valor inteiro não pode ser adicionado a uma variável do tipo flutuante\n\n");
+			exit(1);
+		}
+
+		if(!strcmp(tipoId1,"INT") && !strcmp(tipoId2,"FLOAT")){
+			printf("\n\nO valor flutuante não pode ser adicionado a uma variável do tipo inteiro\n\n");
+			exit(1);
+		}
+
 	}
 
 	if(!strcmp(tree->filhos[1]->nameNode,"VAL_INT")) {
 
-		tipo = getType(tree->filhos[0]->valor, escopo);
-
-		if(!strcmp(tipo,"FLOAT")){
+		if(!strcmp(tipoId1,"FLOAT")){
 			printf("\n\nO valor inteiro não pode ser adicionado a uma variável do tipo flutuante\n\n");
 			exit(1);
 		}
@@ -292,8 +345,7 @@ void trataAtribuicao(TreeNode* tree){
 
 	if(!strcmp(tree->filhos[1]->nameNode,"VAL_DOUBLE")) { 
 
-		tipo = getType(tree->filhos[0]->valor, escopo);
-	   	if(!strcmp(tipo,"INT")){
+	   	if(!strcmp(tipoId1,"INT")){
 			printf("\n\nO valor flutuante não pode ser adicionado a uma variável do tipo inteiro\n\n");
 			exit(1);
 		}

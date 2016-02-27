@@ -5,17 +5,29 @@ inteiro b := 5;
 
 z := 5;
 
-
+flutuante teste := 2.341;
 
 c := 1.5;
 
 inteiro p := 10, couve := 18, g, abobora := 15;
 
 inteiro soma (inteiro a, inteiro b)
+
     inteiro c := 1;
+    inteiro teste2 := 12;
+    inteiro p := c + ((5 * teste2) / 2), soma := 5;
 
-    inteiro p := c + ((5 * z) / 2);
-
+    a := c + p;
     retorna a + p;
+
+fim
+
+flutuante aaa;
+
+flutuante foo()
+    aaa := c;
+    flutuante b := 1.22, c := 5.5, a := aaa, soma := aaa;
+
+    retorna soma;
 
 fim

@@ -108,7 +108,7 @@ void putFunction(char *variable, char *type){
 
 int isFunction(char* id){
 
-    string identifier;
+    string identifier = id;
 
     if(tabela[identifier + "&&"]->isFunction)
         return 1;
