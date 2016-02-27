@@ -116,6 +116,9 @@ void trataListaDeclaracao(TreeNode* aux, char* tipo){
 			if(containsKey(aux->filhos[0]->valor, escopo)){
 				printf("\n\nErro do tipo semantico. Variavel %s ja declarada...\n\n", aux->filhos[0]->valor);
 		    	exit(1);
+			}else{
+
+				putVariable(aux->filhos[0]->valor, tipo, escopo);
 			}
 		}
 
@@ -124,10 +127,13 @@ void trataListaDeclaracao(TreeNode* aux, char* tipo){
 			trataAtribuicaoNaDeclaracao(aux->filhos[1], tipo);
 
 		}else if(!strcmp(aux->filhos[1]->nameNode,"ID")){
-			if(!containsKey(aux->filhos[1]->valor, escopo)){
+			if(containsKey(aux->filhos[1]->valor, escopo)){
 
-				printf("\n\nErro do tipo semantico. Variavel %s nao foi declarada...\n\n", aux->filhos[1]->valor);
+				printf("\n\nErro do tipo semantico. Variavel %s ja declarada...\n\n", aux->filhos[1]->valor);
 		    	exit(1);
+			}else{
+
+				putVariable(aux->filhos[1]->valor, tipo, escopo);
 			}
 
 		}else if(!strcmp(aux->filhos[1]->nameNode,"LISTA_DECLARACAO")){

@@ -12,7 +12,10 @@ c := 1.5;
 inteiro p := 10, couve := 18, g, abobora := 15;
 
 inteiro soma (inteiro a, inteiro b)
+    inteiro c := 1;
 
-    retorna a + c;
+    inteiro p := c + ((5 * z) / 2);
+
+    retorna a + p;
 
 fim
